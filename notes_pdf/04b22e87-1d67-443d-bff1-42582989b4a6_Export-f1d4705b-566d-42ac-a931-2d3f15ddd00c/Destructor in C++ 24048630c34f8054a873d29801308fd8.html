@@ -1,0 +1,764 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>Destructor in C++?</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 3px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	padding-inline-start: 0;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.page-description {
+	margin-bottom: 2em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-block;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1.25em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(50, 48, 44, 1);
+}
+.highlight-gray {
+	color: rgba(115, 114, 110, 1);
+	fill: rgba(115, 114, 110, 1);
+}
+.highlight-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.highlight-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.highlight-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.highlight-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.highlight-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(205, 60, 58, 1);
+	fill: rgba(205, 60, 58, 1);
+}
+.highlight-default_background {
+	color: rgba(50, 48, 44, 1);
+}
+.highlight-gray_background {
+	background: rgba(248, 248, 247, 1);
+}
+.highlight-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.highlight-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.highlight-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.highlight-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.highlight-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.highlight-purple_background {
+	background: rgba(248, 243, 252, 1);
+}
+.highlight-pink_background {
+	background: rgba(252, 241, 246, 1);
+}
+.highlight-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(115, 114, 110, 1);
+	fill: rgba(115, 114, 110, 1);
+}
+.block-color-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.block-color-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.block-color-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.block-color-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.block-color-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(205, 60, 58, 1);
+	fill: rgba(205, 60, 58, 1);
+}
+.block-color-default_background {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray_background {
+	background: rgba(248, 248, 247, 1);
+}
+.block-color-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.block-color-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.block-color-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.block-color-purple_background {
+	background: rgba(248, 243, 252, 1);
+}
+.block-color-pink_background {
+	background: rgba(252, 241, 246, 1);
+}
+.block-color-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.select-value-color-default { background-color: rgba(84, 72, 49, 0.08); }
+.select-value-color-gray { background-color: rgba(84, 72, 49, 0.15); }
+.select-value-color-brown { background-color: rgba(210, 162, 141, 0.35); }
+.select-value-color-orange { background-color: rgba(224, 124, 57, 0.27); }
+.select-value-color-yellow { background-color: rgba(236, 191, 66, 0.39); }
+.select-value-color-green { background-color: rgba(123, 183, 129, 0.27); }
+.select-value-color-blue { background-color: rgba(93, 165, 206, 0.27); }
+.select-value-color-purple { background-color: rgba(168, 129, 197, 0.27); }
+.select-value-color-pink { background-color: rgba(225, 136, 179, 0.27); }
+.select-value-color-red { background-color: rgba(244, 171, 159, 0.4); }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="24048630-c34f-8054-a873-d29801308fd8" class="page sans"><header><h1 class="page-title">Destructor in C++?</h1><p class="page-description"></p></header><div class="page-body"><h2 id="24048630-c34f-809b-9f02-d963c1ad349d" class="">🔷 What is a Destructor in C++?</h2><p id="24048630-c34f-8035-bd24-d4671f9bff3e" class="">A <strong>destructor</strong> is a special member function that is <strong>automatically invoked</strong> when an object <strong>goes out of scope</strong> or is <strong>explicitly deleted</strong>.</p><p id="24048630-c34f-8002-a5fc-e89c4ee8010c" class="">It is used to:</p><ul id="24048630-c34f-80c2-acd6-e2383e5ee94d" class="bulleted-list"><li style="list-style-type:disc"><strong>Clean up resources</strong> (memory, file handles, network connections, etc.)</li></ul><ul id="24048630-c34f-80de-a020-e6190b4ef30c" class="bulleted-list"><li style="list-style-type:disc">Prevent <strong>memory leaks</strong></li></ul><ul id="24048630-c34f-805e-ae5d-ddd7c37148f3" class="bulleted-list"><li style="list-style-type:disc">it is an instance member function that is invoked automatically whenever object is going to be destroyed. </li></ul><ul id="24048630-c34f-8053-af82-de690532664b" class="bulleted-list"><li style="list-style-type:disc">it is the last function that is going to be called before  an object is destroyed. </li></ul><ul id="24048630-c34f-8089-b64d-e77da3bb8886" class="bulleted-list"><li style="list-style-type:disc">ye hamesha ek hi hota hai </li></ul><ul id="24048630-c34f-80d1-8ccf-e9c3d1443458" class="bulleted-list"><li style="list-style-type:disc">koi return type nhi hota   </li></ul><ul id="24048630-c34f-808f-aff7-e412449a06b4" class="bulleted-list"><li style="list-style-type:disc">ye bhi by default create rehta in class me </li></ul><ul id="24048630-c34f-8093-a451-e92eb0a7ebf8" class="bulleted-list"><li style="list-style-type:disc">ye by default jo jo chize initialized hai unko delete kr deta jo jo dynamically diye hote </li></ul><h2 id="24048630-c34f-806c-be71-c4bdefba64b8" class="">🔧 Syntax</h2><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="24048630-c34f-8091-bf86-fdfffb64357c" class="code"><code class="language-C++" style="white-space:pre-wrap;word-break:break-all">cpp
+CopyEdit
+~ClassName();
+
+
+defaultly aisi dikhte 
+~class(){
+delete balance ; 
+}
+</code></pre><p id="24048630-c34f-80e1-8d6a-f91275297698" class="">use case :</p><p id="24048630-c34f-80b1-955a-d5e6b53f9a6a" class="">ye storage ko release kr deta  jb use nhi hota to like jaise printer use kr rhe ab no lopgner use hai to release kr do taki dusre use kr ske </p><p id="24048630-c34f-8032-9a5a-ed76e48e24bb" class="">program stak me run hota to jo jo stack me hota int a , int b , strin name to y to bad me execution ke sath release ho jata </p><p id="24048630-c34f-8012-803b-f5cc225b5e29" class="">but jisko dynamicly  memeory diye hai like e  *p = x ;   *ptr= student    ;  to ye sb to heap me hote to inko bhi release krwna hota </p><p id="24048630-c34f-80e3-bbbe-f4e702fc26d9" class="">ye variabel ko delete nhi krta just unke location ko release kr ste </p><p id="24048630-c34f-8084-9207-c957d00f822e" class="">
+</p><ul id="24048630-c34f-804d-b576-d2def3f8d7d6" class="bulleted-list"><li style="list-style-type:disc">It has the <strong>same name as the class</strong>, preceded by a <strong>tilde (~)</strong>.</li></ul><ul id="24048630-c34f-80fc-a2e3-cc89f55867df" class="bulleted-list"><li style="list-style-type:disc">It <strong>does not take any arguments</strong>.</li></ul><ul id="24048630-c34f-8057-a100-d60cbcd2f70b" class="bulleted-list"><li style="list-style-type:disc">It <strong>does not return anything</strong> (not even <code>void</code>).</li></ul><ul id="24048630-c34f-8031-8728-e4bfe4d9f7d3" class="bulleted-list"><li style="list-style-type:disc">There is <strong>only one destructor per class</strong> (no overloading).</li></ul><p id="24048630-c34f-8080-9737-ec53810e8c3a" class="">
+</p><p id="24048630-c34f-8056-b393-d027c8518c11" class="">
+</p><p id="24048630-c34f-8008-a937-e02b1ace4811" class="">Sure! Let&#x27;s explore <strong>destructors</strong> in C++ in <strong>complete detail</strong> — including definition, syntax, examples, real-life analogy, and interview-focused points.</p><hr id="24048630-c34f-80ea-becd-c11f89540695"/><h2 id="24048630-c34f-8074-975e-f51e98539292" class="">🔷 What is a Destructor in C++?</h2><p id="24048630-c34f-809d-93c3-e090e863ee5a" class="">A <strong>destructor</strong> is a special member function that is <strong>automatically invoked</strong> when an object <strong>goes out of scope</strong> or is <strong>explicitly deleted</strong>.</p><p id="24048630-c34f-8041-96b6-f20ccb473b15" class="">It is used to:</p><ul id="24048630-c34f-8031-abd5-dd6957f23194" class="bulleted-list"><li style="list-style-type:disc"><strong>Clean up resources</strong> (memory, file handles, network connections, etc.)</li></ul><ul id="24048630-c34f-80f4-a806-c00425ab2cd4" class="bulleted-list"><li style="list-style-type:disc">Prevent <strong>memory leaks</strong></li></ul><hr id="24048630-c34f-8094-8e34-fcc9f8a9ab71"/><h2 id="24048630-c34f-80d2-9ddf-d9a414d7d444" class="">🔧 Syntax</h2><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="24048630-c34f-80f2-a5a6-c7e7188702bb" class="code"><code class="language-C++" style="white-space:pre-wrap;word-break:break-all">~ClassName();
+</code></pre><ul id="24048630-c34f-8015-bcd8-d68e66ff6524" class="bulleted-list"><li style="list-style-type:disc">It has the <strong>same name as the class</strong>, preceded by a <strong>tilde (~)</strong>.</li></ul><ul id="24048630-c34f-80f0-a0b3-f1c62de56ed6" class="bulleted-list"><li style="list-style-type:disc">It <strong>does not take any arguments</strong>.</li></ul><ul id="24048630-c34f-80c3-8f5c-e5da0280bb5b" class="bulleted-list"><li style="list-style-type:disc">It <strong>does not return anything</strong> (not even <code>void</code>).</li></ul><ul id="24048630-c34f-807f-8900-f1bb90ed6406" class="bulleted-list"><li style="list-style-type:disc">There is <strong>only one destructor per class</strong> (no overloading).</li></ul><hr id="24048630-c34f-803d-ac49-fd80b41f4294"/><h2 id="24048630-c34f-80ad-aa99-d19c9f6b62e8" class="">🔷 Real-Life Analogy</h2><p id="24048630-c34f-807b-a547-d4b742a25f85" class="">Imagine a <strong>classroom</strong> (object).</p><p id="24048630-c34f-803b-b2d6-c41e5fc2602c" class="">When the class ends (object is destroyed), the <strong>cleaner (destructor)</strong> comes in and:</p><ul id="24048630-c34f-80a0-b8a8-e14a49d80915" class="bulleted-list"><li style="list-style-type:disc">Switches off the lights</li></ul><ul id="24048630-c34f-8005-bfb2-d2f7a49d8c64" class="bulleted-list"><li style="list-style-type:disc">Closes windows</li></ul><ul id="24048630-c34f-8086-9e4c-ecd9f11e300d" class="bulleted-list"><li style="list-style-type:disc">Wipes the board</li></ul><p id="24048630-c34f-8014-89c8-f069e3b541fd" class="">Similarly, in programming, when an object is no longer needed, the destructor ensures everything is <strong>cleaned up</strong> properly.</p><hr id="24048630-c34f-804a-a185-ca7fd39a6846"/><h2 id="24048630-c34f-8012-b975-e423651028b6" class="">🔷 Example</h2><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="24048630-c34f-80ef-a207-fe28e16c92f5" class="code"><code class="language-C++" style="white-space:pre-wrap;word-break:break-all">#include &lt;iostream&gt;
+using namespace std;
+
+class Demo {
+public:
+    Demo() {
+        cout &lt;&lt; &quot;Constructor called!&quot; &lt;&lt; endl;
+    }
+
+    ~Demo() {
+        cout &lt;&lt; &quot;Destructor called!&quot; &lt;&lt; endl;
+    }
+};
+
+int main() {
+    Demo d1;  // Constructor is called here
+    // Destructor will be called automatically when d1 goes out of scope
+}
+</code></pre><p id="24048630-c34f-80c2-b9dc-f8efd2e3b05c" class=""><strong>Output:</strong></p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="24048630-c34f-804b-8e8a-e346d7ac65d6" class="code"><code class="language-Plain Text" style="white-space:pre-wrap;word-break:break-all">Constructor called!
+Destructor called!
+</code></pre><hr id="24048630-c34f-8012-a80f-ea93d77fbca1"/><h2 id="24048630-c34f-8034-bca3-edb8c3bebfd1" class="">🔷 Important Use Case – Dynamic Memory</h2><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="24048630-c34f-8051-aa56-f47a0f537161" class="code"><code class="language-C++" style="white-space:pre-wrap;word-break:break-all">class Memory {
+    int* ptr;
+
+public:
+    Memory() {
+        ptr = new int[5];  // Dynamic memory
+        cout &lt;&lt; &quot;Memory allocated!&quot; &lt;&lt; endl;
+    }
+
+    ~Memory() {
+        delete[] ptr;  // Free the memory
+        cout &lt;&lt; &quot;Memory deallocated!&quot; &lt;&lt; endl;
+    }
+};
+
+int main() {
+    Memory m1;
+}
+</code></pre><p id="24048630-c34f-80a4-a7b8-f932bf1182ec" class=""><strong>Output:</strong></p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="24048630-c34f-80e5-b75b-ff6c5c372314" class="code"><code class="language-Plain Text" style="white-space:pre-wrap;word-break:break-all">Memory allocated!
+Memory deallocated!
+</code></pre><p id="24048630-c34f-8037-a969-d7afb65f264e" class="">Without a destructor, this would cause a <strong>memory leak</strong>!</p><hr id="24048630-c34f-80d2-a391-eec65831c76b"/><h2 id="24048630-c34f-80e5-981e-f3d43700de52" class="">🔷 When is Destructor Called?</h2><ul id="24048630-c34f-80ec-a335-c6d09bfc37c9" class="bulleted-list"><li style="list-style-type:disc">When object <strong>goes out of scope</strong></li></ul><ul id="24048630-c34f-80a7-836e-c76aabdf1623" class="bulleted-list"><li style="list-style-type:disc">When object is <strong>explicitly deleted</strong> (<code>delete</code> keyword for dynamic object)</li></ul><ul id="24048630-c34f-80e0-a4a1-f9756a41496a" class="bulleted-list"><li style="list-style-type:disc">At the <strong>end of the program</strong> for static/global objects</li></ul><hr id="24048630-c34f-803c-9551-f0a34bfcb9aa"/><h2 id="24048630-c34f-80d4-92c4-ffe305bba63c" class="">🔷 Can We Call Destructor Manually?</h2><p id="24048630-c34f-80c7-9542-f9f77ab71664" class="">Yes, but it’s <strong>not recommended</strong> unless you have a very good reason:</p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="24048630-c34f-80f3-afcb-c5c535af82a0" class="code"><code class="language-C++" style="white-space:pre-wrap;word-break:break-all">Demo d;
+d.~Demo();  // Manual call (bad practice usually)
+</code></pre><hr id="24048630-c34f-8098-af61-fbffac39f1fe"/><h2 id="24048630-c34f-8056-a5d2-cf0dec2bda0e" class="">🔷 Constructor vs Destructor</h2><table id="24048630-c34f-8069-a07a-da2f21fa7149" class="simple-table"><thead class="simple-table-header"><tr id="24048630-c34f-8058-8519-df14ac51f795"><th id="L[g?" class="simple-table-header-color simple-table-header">Feature</th><th id="gHb_" class="simple-table-header-color simple-table-header">Constructor</th><th id="XOLF" class="simple-table-header-color simple-table-header">Destructor</th></tr></thead><tbody><tr id="24048630-c34f-8027-a444-d8a888dba6e7"><td id="L[g?" class="">Name</td><td id="gHb_" class="">Same as class</td><td id="XOLF" class="">Same as class with <code>~</code></td></tr><tr id="24048630-c34f-80b9-9db7-c67e704753c0"><td id="L[g?" class="">Purpose</td><td id="gHb_" class="">Initializes object</td><td id="XOLF" class="">Cleans up object</td></tr><tr id="24048630-c34f-8086-87fd-f74750797f67"><td id="L[g?" class="">Parameters</td><td id="gHb_" class="">Can have parameters</td><td id="XOLF" class="">No parameters</td></tr><tr id="24048630-c34f-8055-bbc7-ff1714de7778"><td id="L[g?" class="">Return type</td><td id="gHb_" class="">No return type</td><td id="XOLF" class="">No return type</td></tr><tr id="24048630-c34f-80ad-9cbc-c73f7514e83f"><td id="L[g?" class="">Overloading</td><td id="gHb_" class="">Can be overloaded</td><td id="XOLF" class="">Cannot be overloaded</td></tr><tr id="24048630-c34f-80a5-baeb-d4532760a277"><td id="L[g?" class="">Called</td><td id="gHb_" class="">When object is created</td><td id="XOLF" class="">When object is destroyed</td></tr></tbody></table><hr id="24048630-c34f-808e-aee0-cf207c6cb753"/><h2 id="24048630-c34f-80e8-8fc6-e000b0fad3ad" class=""><mark class="highlight-yellow_background">🔷 Interview Points to Remember</mark></h2><ol type="1" id="24048630-c34f-809f-8a80-dcb10722e08c" class="numbered-list" start="1"><li><mark class="highlight-yellow_background"><strong>Destructor is automatically called</strong></mark><mark class="highlight-yellow_background"> when object goes out of scope.</mark></li></ol><ol type="1" id="24048630-c34f-8024-98fd-f3d9d75e6e9b" class="numbered-list" start="2"><li><mark class="highlight-yellow_background">Only </mark><mark class="highlight-yellow_background"><strong>one destructor per class</strong></mark><mark class="highlight-yellow_background"> — no overloading.</mark></li></ol><ol type="1" id="24048630-c34f-8053-a0f5-f88ac674274e" class="numbered-list" start="3"><li><mark class="highlight-yellow_background">Use destructors to </mark><mark class="highlight-yellow_background"><strong>release dynamically allocated memory</strong></mark><mark class="highlight-yellow_background"> or </mark><mark class="highlight-yellow_background"><strong>close resources</strong></mark><mark class="highlight-yellow_background">.</mark></li></ol><ol type="1" id="24048630-c34f-80a6-b2dc-fb97b15af070" class="numbered-list" start="4"><li><mark class="highlight-yellow_background">Destructors are </mark><mark class="highlight-yellow_background"><strong>crucial in preventing memory leaks</strong></mark><mark class="highlight-yellow_background"> in large applications.</mark></li></ol><ol type="1" id="24048630-c34f-807a-909a-cd5d2906bcb6" class="numbered-list" start="5"><li><mark class="highlight-yellow_background">If a class has a </mark><mark class="highlight-yellow_background"><strong>pointer</strong></mark><mark class="highlight-yellow_background">, always define a destructor to </mark><mark class="highlight-yellow_background"><code>delete</code></mark><mark class="highlight-yellow_background"> that memory.</mark></li></ol><ol type="1" id="24048630-c34f-8018-b374-ce7153f3c5a6" class="numbered-list" start="6"><li><mark class="highlight-yellow_background">If a class has a </mark><mark class="highlight-yellow_background"><strong>constructor but no destructor</strong></mark><mark class="highlight-yellow_background">, the compiler provides a </mark><mark class="highlight-yellow_background"><strong>default destructor</strong></mark><mark class="highlight-yellow_background"> — but it won’t delete dynamically allocated memory!</mark></li></ol><hr id="24048630-c34f-80c8-b138-d428cda094ee"/><h2 id="24048630-c34f-805f-ab58-e1fc383cca45" class="">🔷 Example with <code>new</code> and <code>delete</code></h2><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="24048630-c34f-80f7-9317-c81a35d40745" class="code"><code class="language-C++" style="white-space:pre-wrap;word-break:break-all">class Test {
+public:
+    Test() {
+        cout &lt;&lt; &quot;Object Created\n&quot;;
+    }
+
+    ~Test() {
+        cout &lt;&lt; &quot;Object Destroyed\n&quot;;
+    }
+};
+
+int main() {
+    Test* t = new Test();  // Constructor called
+    delete t;              // Destructor called manually via delete
+}
+</code></pre><hr id="24048630-c34f-8027-9273-fdf62924178d"/><h2 id="24048630-c34f-8019-92f5-e27d658a9bce" class="">🔷 Summary</h2><ul id="24048630-c34f-80a2-a16b-d8b12676c820" class="bulleted-list"><li style="list-style-type:disc">Destructor is <strong>automatic cleanup code</strong>.</li></ul><ul id="24048630-c34f-801e-9fbd-ce1aaf0b644f" class="bulleted-list"><li style="list-style-type:disc">Helps manage <strong>resources safely</strong>.</li></ul><ul id="24048630-c34f-8059-9064-cd84e5542a96" class="bulleted-list"><li style="list-style-type:disc">Critical in <strong>C++ for memory management</strong>, especially with <code>new</code>/<code>delete</code>.</li></ul><hr id="24048630-c34f-8071-8f0a-d76cf13e1f24"/><p id="24048630-c34f-8046-885f-cface2c266ac" class="">Would you like to see a <strong>real-world project scenario</strong> using destructor (like in file handling or class with database connection)?</p><p id="24048630-c34f-80ef-822d-e89f5c22230e" class="">
+</p><p id="24048630-c34f-806a-b699-e412966c7f40" class="">
+</p><p id="24048630-c34f-802e-88cf-e72eedd429ce" class="">
+</p><h2 id="24048630-c34f-8005-af65-ed274ef3d088" class="">📌 Interview Insights</h2><ul id="24048630-c34f-803f-afaf-d5d8bc202ed3" class="bulleted-list"><li style="list-style-type:disc"><strong>Q:</strong> Can an empty class have size 0 in C++?<p id="24048630-c34f-80e0-b7c2-ef2c330a026e" class=""><strong>A:</strong> No, it will be <strong>at least 1 byte</strong> to give it a distinct address.</p></li></ul><ul id="24048630-c34f-8081-b725-f53373309502" class="bulleted-list"><li style="list-style-type:disc"><strong>Q:</strong> Why does the compiler add 1 byte to an empty class?<p id="24048630-c34f-8096-bc11-efbcc6e43b0e" class=""><strong>A:</strong> So each object has a <strong>unique memory address</strong>.</p></li></ul><ul id="24048630-c34f-803a-9e00-ce59305e1eed" class="bulleted-list"><li style="list-style-type:disc"><strong>Q:</strong> What increases the size of an empty class?<p id="24048630-c34f-8048-8061-d0e7912c7ffc" class=""><strong>A:</strong> Adding <strong>virtual functions</strong>, <strong>multiple inheritance</strong>, or <strong>non-static members</strong>.</p></li></ul><hr id="24048630-c34f-80d9-b2e2-e20221b330b5"/><h2 id="24048630-c34f-8041-bf81-db81285e6804" class="">🧠 Interview Tips:</h2><ol type="1" id="24048630-c34f-80a6-af9a-db7d744f08ec" class="numbered-list" start="1"><li><strong>Constructor vs Method</strong> – Constructor auto-calls; method you call manually.</li></ol><ol type="1" id="24048630-c34f-801d-b890-f02cbcd3eed2" class="numbered-list" start="2"><li>Can’t have <code>return</code> in constructor.</li></ol><ol type="1" id="24048630-c34f-8062-9c58-c596ea029321" class="numbered-list" start="3"><li><strong>Can’t be </strong><code><strong>virtual</strong></code>, but <strong>destructors can</strong>.</li></ol><ol type="1" id="24048630-c34f-80bb-9603-e40c53781dec" class="numbered-list" start="4"><li>Can have <strong>default arguments</strong>.</li></ol><ol type="1" id="24048630-c34f-800a-bb1c-ec045af01a10" class="numbered-list" start="5"><li><strong>Copy constructor must take const reference</strong>.</li></ol><ul id="24048630-c34f-8015-a01f-c0ad514d18a9" class="bulleted-list"><li style="list-style-type:disc"><strong>Can a constructor be private?</strong><ul id="24048630-c34f-8093-8ee4-f56b0c7c6e85" class="bulleted-list"><li style="list-style-type:circle">Yes, used in <strong>Singleton Design Pattern</strong>.</li></ul></li></ul><ul id="24048630-c34f-80b2-bc87-efe72047cb22" class="bulleted-list"><li style="list-style-type:disc"><strong>Constructor vs Method:</strong><table id="24048630-c34f-8010-ba67-e0bbbdbef336" class="simple-table"><thead class="simple-table-header"><tr id="24048630-c34f-806d-9c3c-f563e44ab25e"><th id="CjDB" class="simple-table-header-color simple-table-header">Constructor</th><th id="x]qw" class="simple-table-header-color simple-table-header">Method (Function)</th></tr></thead><tbody><tr id="24048630-c34f-8078-8b62-e79a309a81eb"><td id="CjDB" class="">Called automatically</td><td id="x]qw" class="">Called manually</td></tr><tr id="24048630-c34f-8055-ae55-ddd17af6a8d1"><td id="CjDB" class="">No return type</td><td id="x]qw" class="">Has return type</td></tr><tr id="24048630-c34f-807b-8b9d-f80319841fcb"><td id="CjDB" class="">Same name as class</td><td id="x]qw" class="">Any name</td></tr></tbody></table></li></ul><ul id="24048630-c34f-80d6-8ec5-edc24c45504e" class="bulleted-list"><li style="list-style-type:disc">If <strong>no constructor</strong> is defined, compiler provides a <strong>default constructor</strong>.</li></ul><ul id="24048630-c34f-80ff-9124-d0098ff4b9c1" class="bulleted-list"><li style="list-style-type:disc"><strong>Constructor Overloading</strong> allows creating multiple constructors with different parameters.</li></ul><p id="24048630-c34f-80f6-940b-ce78e1ee1a9c" class="">
+</p><p id="24048630-c34f-8022-ac71-f803259740fe" class="">
+</p><p id="24048630-c34f-8050-8ab8-e7a306de44ff" class="">Great question — you&#x27;re noticing something very important about how <strong>object lifetimes</strong> work in C++.</p><hr id="24048630-c34f-80fa-99b8-c68103210658"/><h2 id="24048630-c34f-80d8-b2c2-c3b11252f7da" class="">🔁 <strong>Why is Destructor Called in Reverse Order?</strong></h2><p id="24048630-c34f-8008-980d-d705efe2e9cb" class="">In your program:</p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="24048630-c34f-809c-b4d1-d14e81501e77" class="code"><code class="language-C++" style="white-space:pre-wrap;word-break:break-all">customer c1(&quot;1&quot;);
+customer c2(&quot;2&quot;);
+customer c3(&quot;3&quot;);
+</code></pre><ul id="24048630-c34f-80f6-bae0-ddc6ca52c65d" class="bulleted-list"><li style="list-style-type:disc">You created three objects: <code>c1</code>, <code>c2</code>, and <code>c3</code> — <strong>in that order</strong>.</li></ul><ul id="24048630-c34f-80cb-b416-fb61cecf2690" class="bulleted-list"><li style="list-style-type:disc">Their <strong>constructors</strong> were called <strong>in the order of creation</strong> (1 → 2 → 3).</li></ul><ul id="24048630-c34f-8017-91fe-cac6815f34a5" class="bulleted-list"><li style="list-style-type:disc">But their <strong>destructors</strong> are called <strong>in reverse</strong> (3 → 2 → 1).</li></ul><hr id="24048630-c34f-80a5-8051-cacf2cd6b3b1"/><h2 id="24048630-c34f-8051-9b9a-da8c5f18bb8b" class="">🔍 <strong>Why Does This Happen?</strong></h2><h3 id="24048630-c34f-80be-a7f4-ef6b7f265ba4" class="">👉 Stack-Based Storage</h3><p id="24048630-c34f-8020-af89-cf873902d4b9" class="">Objects like <code>c1</code>, <code>c2</code>, and <code>c3</code> are <strong>local variables</strong>, so they are created on the <strong>stack</strong>. The stack is a <strong>Last In, First Out (LIFO)</strong> structure:</p><ul id="24048630-c34f-8027-91a6-f016549c1298" class="bulleted-list"><li style="list-style-type:disc"><strong>Last created object is destroyed first.</strong></li></ul><p id="24048630-c34f-8093-acf2-c6b6a6f0e406" class="">It&#x27;s just like a <strong>stack of plates</strong> — you put plate 1, then 2, then 3 on top. When cleaning up, you take plate 3 first, then 2, then 1.</p><hr id="24048630-c34f-80bc-9373-da6b402775d6"/><h2 id="24048630-c34f-805e-abee-d01c9a499cbd" class="">🧠 <strong>Why is this reverse destruction important?</strong></h2><h3 id="24048630-c34f-803f-b0af-d0369bde0e8c" class="">✅ To Handle Dependencies Safely</h3><p id="24048630-c34f-8092-a08e-d08d63c34de1" class="">Imagine this case:</p><ul id="24048630-c34f-802d-825f-dd90be4ea794" class="bulleted-list"><li style="list-style-type:disc"><code>Object A</code> uses <code>Object B</code> inside it.</li></ul><ul id="24048630-c34f-8002-9e7b-eb6b5b3b23fd" class="bulleted-list"><li style="list-style-type:disc">If <code>Object B</code> is destroyed <strong>before</strong> <code>A</code>, you may get a <strong>crash</strong> (because <code>A</code> is accessing something that&#x27;s already destroyed).</li></ul><p id="24048630-c34f-80ba-bd5e-ec7be423becf" class="">So C++ makes sure:</p><blockquote id="24048630-c34f-80ed-b52a-e7e46dff316a" class="">Destroy the most recently created objects first — so that any older objects still remain alive if needed.</blockquote><hr id="24048630-c34f-8049-b7b0-e87eaa3d90cb"/><h2 id="24048630-c34f-80cc-9210-f2f6d39afc26" class="">🔧 Analogy</h2><p id="24048630-c34f-8054-b178-c0eec1a23c33" class="">Think of a <strong>hotel check-in desk</strong>:</p><ul id="24048630-c34f-8016-b495-e14ae5e0001d" class="bulleted-list"><li style="list-style-type:disc">First customer to check-in is <code>c1</code>.</li></ul><ul id="24048630-c34f-80c0-b89a-c2387ed6a2ad" class="bulleted-list"><li style="list-style-type:disc">Then <code>c2</code>.</li></ul><ul id="24048630-c34f-8054-86d8-ca9264253253" class="bulleted-list"><li style="list-style-type:disc">Then <code>c3</code>.</li></ul><p id="24048630-c34f-804c-a2d6-e0ff68e68eef" class="">Now during checkout, <code>c3</code> checks out first (most recent).</p><p id="24048630-c34f-808b-b729-c432918ee504" class="">Why? Because otherwise, the person who checked in last might get blocked by earlier ones.</p><hr id="24048630-c34f-80e0-8ec6-f4de294e02f9"/><h2 id="24048630-c34f-802e-9ee0-c87d9fab4bc5" class="">✅ Output of Your Code:</h2><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="24048630-c34f-8035-a40c-d27745cd7135" class="code"><code class="language-C++" style="white-space:pre-wrap;word-break:break-all">constructor is call 1
+constructor is call 2
+constructor is call 3
+destructor is called   3
+destructor is called   2
+destructor is called   1
+</code></pre><hr id="24048630-c34f-80da-a31a-d57185160d0d"/><h2 id="24048630-c34f-809f-a5ac-f165c9b0c69d" class="">🧪 Pro Tip:</h2><p id="24048630-c34f-80f4-8929-ee5e23d2d7e0" class="">If you want to <strong>create objects dynamically using </strong><code><strong>new</strong></code>, then you must <strong>manually delete</strong> them in reverse too.</p><hr id="24048630-c34f-80ab-bddc-ce7dd491bdb7"/><p id="24048630-c34f-8007-9829-dc793e942289" class="">Would you like me to also explain how destruction works with <code>new</code> (heap-allocated objects) and in class composition (has-a relationships)?</p></div></article><span class="sans" style="font-size:14px;padding-top:2em"></span></body></html>
