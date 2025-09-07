@@ -1,0 +1,2 @@
+original data: 13 12 15 11 10 
+ sorted data 10 11 12 13 15 

@@ -12,6 +12,8 @@
     "regex": "cpp",
     "ostream": "cpp",
     "iostream": "cpp",
-    "random": "cpp"
+    "random": "cpp",
+    "stdexcept": "cpp",
+    "fstream": "cpp"
   }
 }
